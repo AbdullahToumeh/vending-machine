@@ -1,37 +1,37 @@
 [
   {
     "key": "A1",
-    "item-name": "All dressed chips",
+    "itemname": "All dressed chips",
     "price": 1.25,
     "stock": 5
   },
   {
     "key": "A2",
-    "item-name": "Sour Patch Kids",
+    "itemname": "Sour Patch Kids",
     "price": 1.5,
     "stock": 2
   },
   {
     "key": "A3",
-    "item-name": "Coffee Crisp",
+    "itemname": "Coffee Crisp",
     "price": 1.0,
     "stock": 3
   },
   {
     "key": "B1",
-    "item-name": "Chocolate covered blueberries",
+    "itemname": "Chocolate covered blueberries",
     "price": 2.0,
     "stock": 0
   },
   {
     "key": "B2",
-    "item-name": "Crackers",
+    "itemname": "Crackers",
     "price": 1.1,
     "stock": 8
   },
   {
     "key": "B1",
-    "item-name": "Juice",
+    "itemname": "Juice",
     "price": 3.0,
     "stock": 6
   }
