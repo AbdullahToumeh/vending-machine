@@ -38,24 +38,42 @@ describe('Vending Machine', () => {
     };
 
     test.purchaseItemButton = 'A2';
+    test.purchaseInvalidButton = 'C1';
+    test.purchaseItemEmpty = 'B1';
     test.purchaseItemChange = {
       '0.25': 2,
       '1.00': 1
+    };
+    test.purchaseItemNotEnoughChange = {
+      '0.25': 3
     };
     test.purchaseItemExtraChange = {
       '2.00': 1
     };
 
     test.purchaseItemReturn = { item: 'Sour Patch Kids', change: {} };
+    test.purchaseItemNotEnoughReturn = {
+      item: 'Insufficient Funds',
+      change: { '0.25': 3 }
+    };
     test.purchaseItemExtraChangeReturn = {
       item: 'Sour Patch Kids',
       change: { '0.25': 2 }
+    };
+    test.purchaseInvalidButtonReturn = {
+      item: 'Invalid Button',
+      change: { '0.25': 2, '1.00': 1 }
+    };
+    test.purchaseItemEmptyReturn = {
+      item: 'Item Empty',
+      change: { '2.00': 1 }
     };
 
     test.itemData = JSON.parse(JSON.stringify(ItemData));
     test.subject = new VendingMachine(test.itemData, test.machineChange);
   });
 
+  // testing printInvetory()
   describe('When a user requests to see inventory', () => {
     it('Should display a list of the inventory with all item information', () => {
       const result = test.subject.printInventory();
@@ -63,6 +81,7 @@ describe('Vending Machine', () => {
     });
   });
 
+  // testing refillInventory()
   describe('When maintenance refills an item using the item key', () => {
     it('Should return an error if no item exists at that location', () => {
       const result = test.subject.refillInventory('C1', 5);
@@ -77,6 +96,7 @@ describe('Vending Machine', () => {
     });
   });
 
+  // testing reSupplyChange()
   describe('When maintenance refills change in the machine', () => {
     it('Should return feedback on the new change amount in the machine', () => {
       const result = test.subject.reSupplyChange(test.refillChange);
@@ -88,6 +108,7 @@ describe('Vending Machine', () => {
     });
   });
 
+  // testing dispenseInventory()
   describe('When a user enters exact change for their button selection', () => {
     it('Should return the item with no change', () => {
       const result = test.subject.dispenseInventory(
@@ -98,7 +119,20 @@ describe('Vending Machine', () => {
     });
   });
   describe('When a user enters insufficient funds for their button selection', () => {
-    it('Should return an error and the entirety of their change back', () => {});
+    it('Should return an error instead of the item', () => {
+      const { item } = test.subject.dispenseInventory(
+        test.purchaseItemButton,
+        test.purchaseItemNotEnoughChange
+      );
+      expect(item).toEqual(test.purchaseItemNotEnoughReturn.item);
+    });
+    it('Should return the entirety of their change back', () => {
+      const { change } = test.subject.dispenseInventory(
+        test.purchaseItemButton,
+        test.purchaseItemNotEnoughChange
+      );
+      expect(change).toEqual(test.purchaseItemNotEnoughReturn.change);
+    });
   });
   describe('When a user enters in more change than necessary for their button selection', () => {
     it('Should return the item', () => {
@@ -117,9 +151,21 @@ describe('Vending Machine', () => {
     });
   });
   describe('When a user clicks an invalid button', () => {
-    it('Should return an error and the entirety of their change back', () => {});
+    it('Should return an error and the entirety of their change back', () => {
+      const result = test.subject.dispenseInventory(
+        test.purchaseInvalidButton,
+        test.purchaseItemChange
+      );
+      expect(result).toEqual(test.purchaseInvalidButtonReturn);
+    });
   });
   describe('When a user chooses an item that has no inventory', () => {
-    it('Should return an error and the entirety of their change back', () => {});
+    it('Should return an error and the entirety of their change back', () => {
+      const result = test.subject.dispenseInventory(
+        test.purchaseItemEmpty,
+        test.purchaseItemExtraChange
+      );
+      expect(result).toEqual(test.purchaseItemEmptyReturn);
+    });
   });
 });

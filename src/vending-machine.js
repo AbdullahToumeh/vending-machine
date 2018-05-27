@@ -55,16 +55,28 @@ class VendingMachine {
     for (let i = 0; i < this.itemData.length; i++) {
       if (this.itemData[i].key === clickedButton) {
         returnedItem.item = this.itemData[i].itemname;
-        if (this.itemData[i].price === totalGiven) {
+        if (this.itemData[i].stock === 0) {
+          returnedItem.item = 'Item Empty';
+          returnedItem.change = inputChange;
+          return returnedItem;
+        } else if (this.itemData[i].price === totalGiven) {
+          this.itemData[i].stock -= 1;
           return returnedItem;
         } else if (this.itemData[i].price > totalGiven) {
           returnedItem.item = 'Insufficient Funds';
           returnedItem.change = inputChange;
           return returnedItem;
         } else {
+          this.itemData[i].stock -= 1;
           totalChange = totalGiven - this.itemData[i].price;
         }
       }
+    }
+
+    if (returnedItem.item === '') {
+      returnedItem.item = 'Invalid Button';
+      returnedItem.change = inputChange;
+      return returnedItem;
     }
 
     //loops over current change in machine (which is in order from greatest to least - therefore should return smallest amount of coins) and adds it to returned change if theres still change left for that value and its less than or equal to the change they need back.
@@ -73,7 +85,12 @@ class VendingMachine {
       while (this.currentChange[i] > 0 && Number(i) <= totalChange) {
         totalChange -= Number(i);
         returnedItem.change[i] += 1;
-        console.log(returnedItem);
+      }
+    }
+
+    for (let i in returnedItem.change) {
+      if (returnedItem.change[i] === 0) {
+        delete returnedItem.change[i];
       }
     }
 
