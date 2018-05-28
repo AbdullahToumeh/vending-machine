@@ -13,4 +13,5 @@ Vending machine written in vanilla JS with functionality to print the inventory,
 ## Set Up
 
 `git clone` this repo
+
 `npm test` in vending-machine directory
