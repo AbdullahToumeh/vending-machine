@@ -81,6 +81,8 @@ describe('Vending Machine', () => {
       error: 'Insufficient change, 0.05 still owed'
     };
 
+    test.readableChangeOutput = '2 quarters, 1 loonie';
+
     test.itemData = JSON.parse(JSON.stringify(ItemData));
     test.subject = new VendingMachine(test.itemData, test.machineChange);
     test.subjectSmallChange = new VendingMachine(
@@ -205,6 +207,18 @@ describe('Vending Machine', () => {
         test.purchaseItemExtraChange
       );
       expect(result).toEqual(test.purchaseItemEmptyReturn);
+    });
+  });
+
+  // testing returnReadableChange()
+  describe('When a user wants to see their change in regular string format', () => {
+    it('Should return an error if their change is in an invalid format', () => {
+      const result = test.subject.returnReadableChange(10);
+      expect(result).toEqual('Invalid change type');
+    });
+    it('Should return a readable string of their change if it is in the correct format', () => {
+      const result = test.subject.returnReadableChange(test.purchaseItemChange);
+      expect(result).toEqual(test.readableChangeOutput);
     });
   });
 });

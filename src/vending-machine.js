@@ -103,7 +103,62 @@ class VendingMachine {
     return returnedItem;
   }
 
-  returnChange() {}
+  returnReadableChange(change) {
+    let readableChange = '';
+    if (typeof change !== 'object') {
+      return 'Invalid change type';
+    }
+
+    for (let i in change) {
+      switch (i) {
+        case '2.00':
+          if (change[i] > 0) {
+            readableChange += change[i] + ' ';
+            change[i] > 1
+              ? (readableChange += 'toonies, ')
+              : (readableChange += 'toonie, ');
+          }
+          break;
+        case '1.00':
+          if (change[i] > 0) {
+            readableChange += change[i] + ' ';
+            change[i] > 1
+              ? (readableChange += 'loonies, ')
+              : (readableChange += 'loonie, ');
+          }
+          break;
+        case '0.25':
+          if (change[i] > 0) {
+            readableChange += change[i] + ' ';
+            change[i] > 1
+              ? (readableChange += 'quarters, ')
+              : (readableChange += 'quarter, ');
+          }
+          break;
+        case '0.10':
+          if (change[i] > 0) {
+            readableChange += change[i] + ' ';
+            change[i] > 1
+              ? (readableChange += 'dimes, ')
+              : (readableChange += 'dime, ');
+          }
+          break;
+        case '0.05':
+          if (change[i] > 0) {
+            readableChange += change[i] + ' ';
+            change[i] > 1
+              ? (readableChange += 'nickles, ')
+              : (readableChange += 'nickle, ');
+          }
+          break;
+        default:
+          return 'Invalid change type';
+      }
+    }
+
+    readableChange = readableChange.substring(0, readableChange.length - 2);
+    return readableChange;
+  }
 }
 
 module.exports = VendingMachine;
