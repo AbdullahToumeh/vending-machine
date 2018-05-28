@@ -9,3 +9,8 @@ Vending machine written in vanilla JS with functionality to print the inventory,
 * Uses Jest for TDD, first time implementing describe and it scenarios.
 * Vending machine written as a Javascript class.
 * Brings in mock data from a JSON file to use for testing.
+
+## Set Up
+
+`git clone` this repo
+`npm test` in vending-machine directory
