@@ -12,6 +12,6 @@ Vending machine written in vanilla JS with functionality to print the inventory,
 
 ## Set Up
 
-`git clone` this repo
+`git clone https://github.com/DakotaPaige/vending-machine.git`
 
 `npm test` in vending-machine directory
