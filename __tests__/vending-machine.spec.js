@@ -12,6 +12,13 @@ describe('Vending Machine', () => {
       '0.10': 5,
       '0.05': 5
     };
+    test.smallMachineChange = {
+      '2.00': 1,
+      '1.00': 0,
+      '0.25': 1,
+      '0.10': 2,
+      '0.05': 0
+    };
 
     test.refillKey = 'A1';
     test.refillAmount = 5;
@@ -68,9 +75,18 @@ describe('Vending Machine', () => {
       item: 'Item Empty',
       change: { '2.00': 1 }
     };
+    test.purchaseItemEmptyChange = {
+      item: 'Sour Patch Kids',
+      change: { '0.25': 1, '0.10': 2 },
+      error: 'Insufficient change, 0.05 still owed'
+    };
 
     test.itemData = JSON.parse(JSON.stringify(ItemData));
     test.subject = new VendingMachine(test.itemData, test.machineChange);
+    test.subjectSmallChange = new VendingMachine(
+      test.itemData,
+      test.smallMachineChange
+    );
   });
 
   // testing printInvetory()
@@ -148,6 +164,29 @@ describe('Vending Machine', () => {
         test.purchaseItemExtraChange
       );
       expect(change).toEqual(test.purchaseItemExtraChangeReturn.change);
+    });
+  });
+  describe('When a user enters in more change than necessary for their selection, but the machine does not have enough change to give back', () => {
+    it('Should return the item', () => {
+      const { item } = test.subjectSmallChange.dispenseInventory(
+        test.purchaseItemButton,
+        test.purchaseItemExtraChange
+      );
+      expect(item).toEqual(test.purchaseItemEmptyChange.item);
+    });
+    it('Should return as much as much change as it can', () => {
+      const { change } = test.subjectSmallChange.dispenseInventory(
+        test.purchaseItemButton,
+        test.purchaseItemExtraChange
+      );
+      expect(change).toEqual(test.purchaseItemEmptyChange.change);
+    });
+    it('Should return feedback to the user to tell them the amount the machine could not return', () => {
+      const { error } = test.subjectSmallChange.dispenseInventory(
+        test.purchaseItemButton,
+        test.purchaseItemExtraChange
+      );
+      expect(error).toEqual(test.purchaseItemEmptyChange.error);
     });
   });
   describe('When a user clicks an invalid button', () => {

@@ -85,7 +85,13 @@ class VendingMachine {
       while (this.currentChange[i] > 0 && Number(i) <= totalChange) {
         totalChange -= Number(i);
         returnedItem.change[i] += 1;
+        this.currentChange[i] -= 1;
       }
+    }
+
+    if (totalChange > 0) {
+      totalChange = totalChange.toFixed(2);
+      returnedItem.error = `Insufficient change, ${totalChange} still owed`;
     }
 
     for (let i in returnedItem.change) {
